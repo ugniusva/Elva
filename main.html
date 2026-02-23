@@ -1,0 +1,1140 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Basic meta -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="ELVA — Premium wine catalogue." />
+  <title>ELVA — Wine Catalogue</title>
+
+  <style>
+    /* =========================================================
+       ELVA — Single-page premium catalogue
+       3-color scheme:
+       1) Ink (background)  2) Ivory (surface/text)  3) Burgundy (accent)
+       ========================================================= */
+
+    :root{
+      /* --- 3-color palette --- */
+      --ink: #0F1116;        /* deep charcoal */
+      --ivory: #F4F1EA;      /* warm off-white */
+      --burgundy: #7C2234;   /* premium accent */
+
+      /* --- derived (still from the same “feel”, used sparingly) --- */
+      --ink-2: rgba(244,241,234,0.08);
+      --ink-3: rgba(244,241,234,0.14);
+      --text: rgba(244,241,234,0.92);
+      --muted: rgba(244,241,234,0.72);
+      --hairline: rgba(244,241,234,0.16);
+      --shadow: 0 18px 50px rgba(0,0,0,0.45);
+
+      /* --- layout --- */
+      --radius: 18px;
+      --radius-sm: 12px;
+      --max: 1120px;
+    }
+
+    /* Smooth scroll + nicer text rendering */
+    html{ scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: ui-serif, "Georgia", "Times New Roman", serif;
+      background: radial-gradient(900px 600px at 20% 15%, rgba(124,34,52,0.20), transparent 55%),
+                  radial-gradient(800px 500px at 80% 35%, rgba(124,34,52,0.12), transparent 50%),
+                  var(--ink);
+      color: var(--text);
+      letter-spacing: 0.2px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Subtle page-wide grain (premium texture) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02), rgba(255,255,255,0.02)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity: .22;
+    }
+
+    /* Container */
+    .wrap{
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* =========================================================
+       Header / Nav
+       ========================================================= */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(15,17,22,0.62);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 16px 0;
+      gap: 16px;
+    }
+
+    /* Brand mark */
+    .brand{
+      display:flex;
+      align-items:baseline;
+      gap: 12px;
+      text-decoration:none;
+      color: var(--ivory);
+    }
+    .brand .logo{
+      font-weight: 650;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+    .brand .tag{
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Nav links */
+    .navlinks{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+    .navlinks a{
+      text-decoration:none;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: transform .25s ease, border-color .25s ease, color .25s ease, background .25s ease;
+    }
+    .navlinks a:hover{
+      color: var(--ivory);
+      border-color: var(--hairline);
+      background: rgba(244,241,234,0.04);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================
+       Hero
+       ========================================================= */
+    .hero{
+      padding: 56px 0 26px;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .heroCard{
+      background: rgba(244,241,234,0.04);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position: relative;
+      isolation: isolate;
+    }
+    /* Accent glow inside hero card */
+    .heroCard::after{
+      content:"";
+      position:absolute;
+      inset:-60px -80px auto auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,34,52,0.45), transparent 62%);
+      filter: blur(2px);
+      z-index:-1;
+      opacity: .9;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--hairline);
+      background: rgba(244,241,234,0.03);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--burgundy);
+      box-shadow: 0 0 0 6px rgba(124,34,52,0.16);
+    }
+
+    h1{
+      margin: 16px 0 10px;
+      font-size: clamp(34px, 4vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--ivory);
+      font-weight: 520;
+    }
+    .lead{
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 62ch;
+      font-size: 15px;
+    }
+
+    .heroActions{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    /* Premium button style */
+    .btn{
+      appearance:none;
+      border: 1px solid var(--hairline);
+      background: rgba(244,241,234,0.04);
+      color: var(--ivory);
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease;
+    }
+    .btn:hover{
+      transform: translateY(-2px);
+      background: rgba(244,241,234,0.06);
+      border-color: rgba(244,241,234,0.26);
+    }
+    .btnPrimary{
+      border-color: rgba(124,34,52,0.55);
+      background: linear-gradient(180deg, rgba(124,34,52,0.55), rgba(124,34,52,0.28));
+    }
+    .btnPrimary:hover{
+      border-color: rgba(124,34,52,0.85);
+      background: linear-gradient(180deg, rgba(124,34,52,0.70), rgba(124,34,52,0.30));
+    }
+
+    /* Right-side “feature” panel in hero */
+    .heroSide{
+      display:flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mini{
+      background: rgba(244,241,234,0.04);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .miniTitle{
+      margin: 0 0 8px;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ivory);
+    }
+    .miniText{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    /* =========================================================
+       Section headings
+       ========================================================= */
+    section{
+      padding: 30px 0;
+    }
+    .sectionHead{
+      display:flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 10px 0 18px;
+    }
+    .sectionHead h2{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      font-weight: 560;
+    }
+
+    /* =========================================================
+       Catalogue grid
+       ========================================================= */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+
+    .card{
+      grid-column: span 4;
+      background: rgba(244,241,234,0.035);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      transform: translateZ(0);
+      transition: transform .28s ease, border-color .28s ease, background .28s ease;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      border-color: rgba(244,241,234,0.28);
+      background: rgba(244,241,234,0.05);
+    }
+
+    /* Image crop */
+    .thumb{
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow:hidden;
+      border-bottom: 1px solid rgba(244,241,234,0.10);
+      background: rgba(0,0,0,0.2);
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .45s ease;
+      filter: contrast(1.02) saturate(1.02);
+    }
+    .card:hover .thumb img{ transform: scale(1.06); }
+
+    /* Small badge overlay */
+    .badge{
+      position:absolute;
+      left: 14px;
+      top: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(244,241,234,0.18);
+      background: rgba(15,17,22,0.55);
+      backdrop-filter: blur(8px);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ivory);
+    }
+
+    .cardBody{
+      padding: 16px 16px 14px;
+    }
+
+    .nameRow{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .wineName{
+      margin:0;
+      font-size: 18px;
+      font-weight: 560;
+      color: var(--ivory);
+      letter-spacing: -0.01em;
+    }
+    .price{
+      margin:0;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      opacity: 0.92;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,34,52,0.52);
+      background: rgba(124,34,52,0.18);
+      white-space: nowrap;
+    }
+
+    .meta{
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .notes{
+      margin: 0 0 14px;
+      color: rgba(244,241,234,0.78);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .cardActions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid rgba(244,241,234,0.10);
+    }
+
+    /* Chip buttons (now works for <button> too) */
+    .chip{
+      appearance: none;
+      border: 1px solid var(--hairline);
+      background: rgba(244,241,234,0.03);
+      color: var(--ivory);
+      border-radius: 999px;
+      padding: 9px 11px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+      font-family: inherit; /* keep premium serif */
+    }
+    .chip:hover{
+      transform: translateY(-2px);
+      border-color: rgba(244,241,234,0.26);
+      background: rgba(244,241,234,0.05);
+    }
+    .chip:focus-visible{
+      outline: 2px solid rgba(124,34,52,0.55);
+      outline-offset: 3px;
+    }
+    .chipAccent{
+      border-color: rgba(124,34,52,0.55);
+      background: rgba(124,34,52,0.22);
+    }
+    .chipAccent:hover{
+      border-color: rgba(124,34,52,0.85);
+      background: rgba(124,34,52,0.30);
+    }
+
+    /* =========================================================
+       About / CTA strip
+       ========================================================= */
+    .strip{
+      background: rgba(244,241,234,0.04);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .strip p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 70ch;
+      font-size: 14px;
+    }
+
+    /* =========================================================
+       Modal (Details popup)
+       ========================================================= */
+    .modal{
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(15,17,22,0.62);
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+    .modal.is-open{
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modalDialog{
+      width: min(980px, 100%);
+      border-radius: calc(var(--radius) + 4px);
+      border: 1px solid rgba(244,241,234,0.18);
+      background: rgba(244,241,234,0.05);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.60);
+      overflow: hidden;
+      transform: translateY(10px) scale(0.99);
+      transition: transform .22s ease;
+      position: relative;
+    }
+    .modal.is-open .modalDialog{
+      transform: translateY(0) scale(1);
+    }
+
+    .modalTop{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(244,241,234,0.10);
+      background: rgba(15,17,22,0.28);
+      backdrop-filter: blur(10px);
+    }
+    .modalTop .modalKicker{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .modalClose{
+      appearance: none;
+      border: 1px solid var(--hairline);
+      background: rgba(244,241,234,0.03);
+      color: var(--ivory);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+      font-family: inherit;
+    }
+    .modalClose:hover{
+      transform: translateY(-2px);
+      border-color: rgba(244,241,234,0.26);
+      background: rgba(244,241,234,0.05);
+    }
+    .modalClose:focus-visible{
+      outline: 2px solid rgba(124,34,52,0.55);
+      outline-offset: 3px;
+    }
+
+    .modalGrid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0;
+    }
+
+    .modalMedia{
+      position: relative;
+      background: rgba(0,0,0,0.20);
+      border-right: 1px solid rgba(244,241,234,0.10);
+      min-height: 360px;
+    }
+    .modalMedia img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+      transform: scale(1.01);
+      filter: contrast(1.02) saturate(1.02);
+    }
+
+    .modalBadge{
+      position:absolute;
+      left: 14px;
+      top: 14px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(244,241,234,0.18);
+      background: rgba(15,17,22,0.55);
+      backdrop-filter: blur(8px);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ivory);
+    }
+
+    .modalBody{
+      padding: 18px 18px 16px;
+    }
+    .modalTitleRow{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .modalTitle{
+      margin: 0;
+      font-size: 24px;
+      letter-spacing: -0.01em;
+      color: var(--ivory);
+      font-weight: 560;
+      line-height: 1.15;
+    }
+    .modalPrice{
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      opacity: 0.92;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(124,34,52,0.52);
+      background: rgba(124,34,52,0.18);
+      white-space: nowrap;
+    }
+    .modalMeta{
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .modalNotes{
+      margin: 0 0 14px;
+      color: rgba(244,241,234,0.82);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* Optional “secondary action” placeholder (kept minimal) */
+    .modalActions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid rgba(244,241,234,0.10);
+    }
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+    footer{
+      margin-top: 30px;
+      border-top: 1px solid var(--hairline);
+      background: rgba(15,17,22,0.62);
+      backdrop-filter: blur(10px);
+    }
+    .foot{
+      padding: 22px 0;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .copyright{
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .social{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    /* Social buttons (href="#") */
+    .social a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid var(--hairline);
+      background: rgba(244,241,234,0.03);
+      color: var(--ivory);
+      text-decoration:none;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .social a:hover{
+      transform: translateY(-2px);
+      border-color: rgba(244,241,234,0.26);
+      background: rgba(244,241,234,0.05);
+    }
+
+    /* =========================================================
+       Responsive
+       ========================================================= */
+    @media (max-width: 980px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .card{ grid-column: span 6; }
+      .sectionHead{ flex-direction: column; align-items: start; }
+      .modalGrid{ grid-template-columns: 1fr; }
+      .modalMedia{ border-right: 0; border-bottom: 1px solid rgba(244,241,234,0.10); min-height: 300px; }
+    }
+    @media (max-width: 640px){
+      .card{ grid-column: span 12; }
+      .nav{ padding: 14px 0; }
+      .navlinks a{ padding: 9px 10px; }
+      .hero{ padding: 40px 0 18px; }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================================================
+       Header
+       ========================================================= -->
+  <header>
+    <div class="wrap nav">
+      <!-- Brand -->
+      <a class="brand" href="#top" aria-label="ELVA Home">
+        <span class="logo">ELVA</span>
+        <span class="tag">Wine Catalogue</span>
+      </a>
+
+      <!-- Navigation -->
+      <nav class="navlinks" aria-label="Primary">
+        <a href="#catalogue">Catalogue</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Anchor target for “top” -->
+  <div id="top"></div>
+
+  <!-- =========================================================
+       Hero
+       ========================================================= -->
+  <main class="wrap">
+    <section class="hero" aria-label="Introduction">
+      <div class="heroGrid">
+        <!-- Left: main hero card -->
+        <div class="heroCard">
+          <div class="kicker">
+            <span class="dot" aria-hidden="true"></span>
+            Curated selection • Limited releases
+          </div>
+
+          <h1>Exceptional bottles, presented with quiet confidence.</h1>
+          <p class="lead">
+            ELVA is a minimal, premium wine catalogue for showcasing a refined lineup.
+            
+          </p>
+
+          <div class="heroActions">
+            <a class="btn btnPrimary" href="#catalogue">Explore Catalogue</a>
+            <a class="btn" href="#contact">Enquire</a>
+          </div>
+        </div>
+
+        <!-- Right: supporting info -->
+        <aside class="heroSide" aria-label="Highlights">
+          <div class="mini">
+            <p class="miniTitle">Selection Notes</p>
+            <p class="miniText">
+              Balanced reds, crisp whites, and one sparkling standout — built for a clean “premium shelf” vibe.
+            </p>
+            <!-- Removed: “New arrivals” and “Focus” rows (as requested) -->
+          </div>
+
+          <div class="mini">
+            <p class="miniTitle">Service</p>
+            <p class="miniText">
+              Ideal for boutique catalogues, restaurants, or tasting rooms.   
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Catalogue
+         ========================================================= -->
+    <section id="catalogue" aria-label="Wine Catalogue">
+      <div class="sectionHead">
+        <div>
+          <h2>Catalogue</h2>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- Card 1 -->
+        <article class="card" aria-label="Wine 1">
+          <div class="thumb">
+            <img src="images/wine1.jpg" alt="Bottle of ELVA Crimson Reserve" loading="lazy" />
+            <div class="badge">Red</div>
+          </div>
+          <div class="cardBody">
+            <div class="nameRow">
+              <h3 class="wineName">Crimson Reserve</h3>
+              <p class="price">€29</p>
+            </div>
+            <p class="meta">Cabernet Sauvignon • 2021 • Bordeaux, FR</p>
+            <p class="notes">Black cherry, cocoa, cedar. Polished tannins with a long, warm finish.</p>
+            <div class="cardActions">
+              <!-- Details opens modal (no more “Add” button) -->
+              <button
+                class="chip chipAccent js-details"
+                type="button"
+                data-name="Crimson Reserve"
+                data-price="€29"
+                data-meta="Cabernet Sauvignon • 2021 • Bordeaux, FR"
+                data-notes="Black cherry, cocoa, cedar. Polished tannins with a long, warm finish."
+                data-badge="Red"
+                data-img="images/wine1.jpg"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" aria-label="Wine 2">
+          <div class="thumb">
+            <img src="images/wine2.jpg" alt="Bottle of ELVA Velvet Pinot" loading="lazy" />
+            <div class="badge">Red</div>
+          </div>
+          <div class="cardBody">
+            <div class="nameRow">
+              <h3 class="wineName">Velvet Pinot</h3>
+              <p class="price">€24</p>
+            </div>
+            <p class="meta">Pinot Noir • 2022 • Burgundy, FR</p>
+            <p class="notes">Raspberry, rose, subtle spice. Silky texture with bright, clean acidity.</p>
+            <div class="cardActions">
+              <button
+                class="chip chipAccent js-details"
+                type="button"
+                data-name="Velvet Pinot"
+                data-price="€24"
+                data-meta="Pinot Noir • 2022 • Burgundy, FR"
+                data-notes="Raspberry, rose, subtle spice. Silky texture with bright, clean acidity."
+                data-badge="Red"
+                data-img="images/wine2.jpg"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card" aria-label="Wine 3">
+          <div class="thumb">
+            <img src="images/wine3.jpg" alt="Bottle of ELVA Alpine Blanc" loading="lazy" />
+            <div class="badge">White</div>
+          </div>
+          <div class="cardBody">
+            <div class="nameRow">
+              <h3 class="wineName">Alpine Blanc</h3>
+              <p class="price">€19</p>
+            </div>
+            <p class="meta">Sauvignon Blanc • 2023 • Loire, FR</p>
+            <p class="notes">Citrus zest, pear, mineral lift. Crisp, refreshing, and impeccably dry.</p>
+            <div class="cardActions">
+              <button
+                class="chip chipAccent js-details"
+                type="button"
+                data-name="Alpine Blanc"
+                data-price="€19"
+                data-meta="Sauvignon Blanc • 2023 • Loire, FR"
+                data-notes="Citrus zest, pear, mineral lift. Crisp, refreshing, and impeccably dry."
+                data-badge="White"
+                data-img="images/wine3.jpg"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card" aria-label="Wine 4">
+          <div class="thumb">
+            <img src="images/wine4.jpg" alt="Bottle of ELVA Golden Chardonnay" loading="lazy" />
+            <div class="badge">White</div>
+          </div>
+          <div class="cardBody">
+            <div class="nameRow">
+              <h3 class="wineName">Golden Chardonnay</h3>
+              <p class="price">€27</p>
+            </div>
+            <p class="meta">Chardonnay • 2022 • Sonoma, US</p>
+            <p class="notes">Apple, toasted almond, soft vanilla. Creamy body with a restrained oak touch.</p>
+            <div class="cardActions">
+              <button
+                class="chip chipAccent js-details"
+                type="button"
+                data-name="Golden Chardonnay"
+                data-price="€27"
+                data-meta="Chardonnay • 2022 • Sonoma, US"
+                data-notes="Apple, toasted almond, soft vanilla. Creamy body with a restrained oak touch."
+                data-badge="White"
+                data-img="images/wine4.jpg"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card" aria-label="Wine 5">
+          <div class="thumb">
+            <img src="images/wine5.jpg" alt="Bottle of ELVA Rosé Spark" loading="lazy" />
+            <div class="badge">Sparkling</div>
+          </div>
+          <div class="cardBody">
+            <div class="nameRow">
+              <h3 class="wineName">Rosé Spark</h3>
+              <p class="price">€22</p>
+            </div>
+            <p class="meta">Brut Rosé • NV • Veneto, IT</p>
+            <p class="notes">Strawberry, brioche, fine bubbles. Clean, celebratory, and sharply elegant.</p>
+            <div class="cardActions">
+              <button
+                class="chip chipAccent js-details"
+                type="button"
+                data-name="Rosé Spark"
+                data-price="€22"
+                data-meta="Brut Rosé • NV • Veneto, IT"
+                data-notes="Strawberry, brioche, fine bubbles. Clean, celebratory, and sharply elegant."
+                data-badge="Sparkling"
+                data-img="images/wine5.jpg"
+              >
+                Details
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         About
+         ========================================================= -->
+    <section id="about" aria-label="About ELVA">
+      <div class="sectionHead">
+        <div>
+          <h2>About</h2>
+        </div>
+      </div>
+
+      <div class="strip">
+        <p>
+          ELVA is designed to feel premium by default: clean typography, generous spacing, subtle texture,
+          and restrained accent color. 
+        </p>
+        <a class="btn btnPrimary" href="#contact">Work with us</a>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         Contact
+         ========================================================= -->
+    <section id="contact" aria-label="Contact">
+      <div class="sectionHead">
+        <div>
+          <h2>Contact</h2>
+        </div>
+      </div>
+
+      <div class="strip">
+        <p>
+          For enquiries, tastings, or wholesale: 
+        </p>
+        <a class="btn" href="#">Send enquiry</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       Modal markup (hidden until a Details button is clicked)
+       ========================================================= -->
+  <div class="modal" id="wineModal" aria-hidden="true">
+    <!-- Clicking outside the dialog closes it (handled in JS) -->
+    <div class="modalDialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalTop">
+        <div class="modalKicker">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="modalKickerText">Wine Details</span>
+        </div>
+        <button class="modalClose" type="button" id="modalCloseBtn" aria-label="Close details">
+          Close
+        </button>
+      </div>
+
+      <div class="modalGrid">
+        <div class="modalMedia">
+          <img id="modalImg" src="" alt="" />
+          <div class="modalBadge" id="modalBadge">—</div>
+        </div>
+
+        <div class="modalBody">
+          <div class="modalTitleRow">
+            <h3 class="modalTitle" id="modalTitle">—</h3>
+            <p class="modalPrice" id="modalPrice">—</p>
+          </div>
+
+          <p class="modalMeta" id="modalMeta">—</p>
+          <p class="modalNotes" id="modalNotes">—</p>
+
+          <!-- Optional future placeholder area (kept minimal & premium) -->
+          <div class="modalActions">
+            <a class="btn btnPrimary" href="#contact">Enquire</a>
+            <a class="btn" href="#catalogue">Back to catalogue</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       Footer
+       ========================================================= -->
+  <footer>
+    <div class="wrap foot">
+      <div class="copyright">
+        © <span id="year">2026</span> ELVA • All rights reserved
+      </div>
+
+      <div class="social" aria-label="Social links">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="X">X</a>
+        <a href="#" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Auto-update footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    /* =========================================================
+       Modal logic for “Details”
+       - Opens a premium overlay with bigger image + same text
+       - Closes on:
+         * Close button
+         * Click outside dialog
+         * Escape key
+       ========================================================= */
+
+    const modal = document.getElementById("wineModal");
+    const dialog = modal.querySelector(".modalDialog");
+    const closeBtn = document.getElementById("modalCloseBtn");
+
+    // Modal content nodes
+    const modalImg = document.getElementById("modalImg");
+    const modalBadge = document.getElementById("modalBadge");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalPrice = document.getElementById("modalPrice");
+    const modalMeta = document.getElementById("modalMeta");
+    const modalNotes = document.getElementById("modalNotes");
+
+    // Track last focused element for nicer UX
+    let lastFocus = null;
+
+    function openModalFromButton(btn){
+      lastFocus = document.activeElement;
+
+      // Pull data from the clicked Details button
+      const name = btn.dataset.name || "";
+      const price = btn.dataset.price || "";
+      const meta = btn.dataset.meta || "";
+      const notes = btn.dataset.notes || "";
+      const badge = btn.dataset.badge || "";
+      const img = btn.dataset.img || "";
+
+      // Inject content into the modal
+      modalTitle.textContent = name;
+      modalPrice.textContent = price;
+      modalMeta.textContent = meta;
+      modalNotes.textContent = notes;
+      modalBadge.textContent = badge;
+
+      modalImg.src = img;
+      modalImg.alt = `Bottle of ELVA ${name}`;
+
+      // Show modal
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+
+      // Focus the close button (simple accessibility win)
+      closeBtn.focus();
+    }
+
+    function closeModal(){
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+
+      // Clear image source (optional; prevents showing old image briefly)
+      modalImg.src = "";
+      modalImg.alt = "";
+
+      // Restore focus
+      if (lastFocus && typeof lastFocus.focus === "function") {
+        lastFocus.focus();
+      }
+    }
+
+    // Bind all Details buttons
+    document.querySelectorAll(".js-details").forEach(btn => {
+      btn.addEventListener("click", () => openModalFromButton(btn));
+    });
+
+    // Close button
+    closeBtn.addEventListener("click", closeModal);
+
+    // Click outside the dialog closes the modal
+    modal.addEventListener("click", (e) => {
+      // If the click is not inside the dialog, close
+      if (!dialog.contains(e.target)) closeModal();
+    });
+
+    // Escape key closes the modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
