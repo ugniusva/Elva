@@ -1,0 +1,262 @@
+<!-- about.html (locked, no scroll; uses SAME top navbar style as your index) -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ELVA — About</title>
+
+  <style>
+    :root{
+      --fg: rgba(255,255,255,.92);
+      --fg2: rgba(255,255,255,.78);
+      --fg3: rgba(255,255,255,.62);
+      --shadow: 0 18px 70px rgba(0,0,0,.55);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+
+    /* locked page (no scroll) */
+    body{
+      margin:0;
+      height:100vh;
+      overflow:hidden;
+      background:#000;
+      color:var(--fg);
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+    }
+    a{color:inherit; text-decoration:none}
+
+    /* ===== TOP NAV (copied from your index setup) ===== */
+    header{
+      position:absolute;
+      top:0; left:0; right:0;
+      padding: 40px 60px;
+      z-index:5;
+
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:start;
+    }
+
+    .nav-left, .nav-right{
+      display:flex;
+      gap:60px;
+      align-items:center;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      font-size:20px;
+      letter-spacing:.02em;
+    }
+    .nav-left{justify-content:flex-start}
+    .nav-right{justify-content:flex-end}
+
+    header a{
+      color: var(--fg2);
+      transition: color .2s ease;
+    }
+    header a:hover{ color: var(--fg); }
+
+    .brand{
+      text-align:center;
+      line-height:1.1;
+      user-select:none;
+      text-shadow: var(--shadow);
+    }
+    .brand .logo{
+      font-size:40px;
+      letter-spacing:.06em;
+      font-weight:500;
+    }
+    .brand .year{
+      margin-top:12px;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      font-size:20px;
+      letter-spacing:.30em;
+      color: var(--fg3);
+    }
+
+    /* ===== LAYOUT ===== */
+    .page{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+    }
+
+    /* top content area: 70% */
+    .top{
+      height:70vh; /* bottom is 30% */
+      position:relative;
+      display:grid;
+      grid-template-columns: 1fr min(420px, 28vw);
+      align-items:center;
+      padding: 0 80px;
+      gap: 60px;
+    }
+
+    /* center text (centered between navbar and bottom image) */
+    .text{
+      justify-self:center;
+      text-align:center;
+      max-width: 70ch;
+      margin-top: 40px; /* keeps it visually centered under big nav */
+      text-shadow: var(--shadow);
+    }
+
+    .text h1{
+      margin:0;
+      font-weight:500;
+      font-size: clamp(34px, 3.2vw, 52px);
+      letter-spacing: .01em;
+      color: rgba(255,255,255,.86);
+    }
+    .text h2{
+      margin: 10px 0 0;
+      font-weight:500;
+      font-size: clamp(22px, 2.4vw, 40px);
+      color: rgba(255,255,255,.78);
+    }
+    .text p{
+      margin: 18px auto 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
+      font-size: 16px;
+      line-height: 1.9;
+      color: rgba(255,255,255,.68);
+    }
+
+    /* right image1.png */
+    .side{
+      justify-self:end;
+      align-self:center;
+      width:100%;
+      max-width: 420px;
+    }
+    .side img{
+      width:100%;
+      height:auto;
+      display:block;
+      opacity:.92;
+      filter: contrast(1.02) saturate(1.0);
+    }
+
+    /* bottom image2.png: 30% height */
+    .bottom{
+      height:30vh;
+      width:100%;
+      overflow:hidden;
+      position:relative;
+    }
+    .bottom img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* subtle background behind top (so it feels like white page reference but still your dark theme) */
+    .top::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(900px 520px at 50% 40%, rgba(255,255,255,.06), rgba(0,0,0,0) 60%),
+        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.25));
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    /* PAGE TRANSITION (same as index) */
+    .fade{
+      position:fixed; inset:0;
+      background:#000;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .22s ease;
+      z-index:999;
+    }
+    .fade.on{opacity:1}
+
+    @media (max-width: 980px){
+      .top{
+        grid-template-columns: 1fr;
+        padding: 0 26px;
+        gap: 24px;
+      }
+      .side{
+        justify-self:center;
+        max-width: 340px;
+      }
+      .text{ margin-top: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      header a,.fade{transition:none}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fade" id="fade"></div>
+
+  <main class="page">
+    <!-- top nav (same structure/feel as index) -->
+    <header>
+      <nav class="nav-left">
+        <a href="about.html" data-nav>About</a>
+      </nav>
+
+      <a class="brand" href="index.html" data-nav>
+        <div class="logo">ELVA</div>
+        <div class="year">EST. 1850</div>
+      </a>
+
+      <nav class="nav-right">
+        <a href="contact.html" data-nav>Contacts</a>
+        <a href="contact.html" data-nav>Mail us</a>
+      </nav>
+    </header>
+
+    <!-- top 70% -->
+    <section class="top">
+      <div class="text">
+        <h1>ELVA:</h1>
+        <h2>Journey Through the Ages</h2>
+        <p>
+          Replace this with your real story. Keep it short, elegant, and premium.
+          A few lines about the estate, the vineyards, and the philosophy behind the selection.
+        </p>
+        <p>
+          Minimal layout. Quiet typography. Everything stays locked and composed.
+        </p>
+      </div>
+
+      <aside class="side">
+        <img src="/images/image1.png" alt="About visual" />
+      </aside>
+    </section>
+
+    <!-- bottom 30% -->
+    <section class="bottom">
+      <img src="/images/image2.png" alt="Landscape" />
+    </section>
+  </main>
+
+  <script>
+    // page fade transition (same as index)
+    const fade = document.getElementById("fade");
+    function go(url){
+      fade.classList.add("on");
+      setTimeout(() => location.href = url, 150);
+    }
+    document.querySelectorAll("a[data-nav]").forEach(a => {
+      a.addEventListener("click", (e) => {
+        const url = a.getAttribute("href");
+        if (!url || url.startsWith("#")) return;
+        e.preventDefault();
+        go(url);
+      });
+    });
+    window.addEventListener("pageshow", () => fade.classList.remove("on"));
+  </script>
+</body>
+</html>
