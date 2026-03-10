@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ELVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{
       --fg: rgba(255,255,255,.92);
@@ -59,13 +60,13 @@
       align-items:start;
     }
     .nav-left, .nav-right{
-      display:flex;
-      gap:28px;
-      align-items:center;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
-      font-size:16px;
-      letter-spacing:.02em;
-    }
+  display:flex;
+  gap:60px;
+  align-items:center;
+  font-family: "Playfair Display", serif;
+  font-size:20px;
+  letter-spacing:.04em;
+}
     .nav-left{justify-content:flex-start}
     .nav-right{justify-content:flex-end}
 
@@ -76,30 +77,23 @@ header{
   padding: 40px 60px;   /* much bigger spacing */
   z-index:5;
 
-  display:grid;
+  display:grid; 
   grid-template-columns: 1fr auto 1fr;
   align-items:start;
 }
 
-.nav-left, .nav-right{
-  display:flex;
-  gap:60px;                     /* bigger spacing between links */
-  align-items:center;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial;
-  font-size:20px;               /* ~3x bigger */
-  letter-spacing:.02em;
-}
 
-.nav-left{justify-content:flex-start}
-.nav-right{justify-content:flex-end}
 
 header a{
   color: var(--fg2);
-  transition: color .2s ease;
+  padding:6px 12px;
+  border-radius:6px;
+  transition: all .25s ease;
 }
 
 header a:hover{
-  color: var(--fg);
+  color:var(--fg);
+  background: rgba(0,0,0,.35);
 }
 
 /* Center brand */
@@ -199,8 +193,8 @@ header a:hover{
       </a>
 
       <nav class="nav-right">
-        <a href="contact.html" data-nav>Contacts</a>
-        <a href="contact.html" data-nav>Mail us</a>
+      <a href="tours.html">Tours</a>
+      <a href="contact.html">Contact</a>
       </nav>
     </header>
 
